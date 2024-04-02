@@ -1,13 +1,15 @@
 import React from "react";
+import { BrowserRouter } from "react-router-dom";
+import BaseRoute from "./apps/BaseRoute";
 import LayoutInit from "./components/LayoutInit";
-import ChapterOne from "./components/ChapterOne";
 
-function App() {
+function App({ basename }) {
   return (
-    
+    <BrowserRouter>
       <LayoutInit>
-        <ChapterOne />
+        <BaseRoute />
       </LayoutInit>
+    </BrowserRouter>
   );
 }
 

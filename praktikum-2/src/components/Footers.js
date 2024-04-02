@@ -1,17 +1,10 @@
 import React from "react";
 
-export default function Footer() {
-  const footerStyle = {
-    backgroundColor: "#007BFF",
-    color: "#FFF",
-    padding: "10px",
-    textAlign: "center",
-  };
-
+export default function Footers() {
   return (
-    <div className="footer" style={footerStyle}>
+    <div className="mb-5">
       <div className="">
-        <div className="">
+        <div className="text-center mb">
           <span className="">2024 &copy;</span>
           <span className="">IBI Kesatuan Bogor</span>
         </div>
