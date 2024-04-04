@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { ButtonPrimary, ButtonSecondary } from "./components/ButtonUI";
 import ChatBody from "./components/ChatBody";
 import moment from "moment";
@@ -43,7 +43,20 @@ export default function MessegersUI() {
     { id: 7, message: "Bijii", from: "Isnan", date: "2024-01-20 12:12:00" },
   ];
 
-  const [myChat, setMyChat] = useState(chatArr);
+  const EmptyChat = () => {
+    return (
+      <div>
+        <div className="info text-center">
+          <h1>No Conversations</h1>
+          <p>You didn't made any conversation yet, please select username</p>
+          <span className="badge badge-primary">Start a chat</span>
+        </div>
+      </div>
+    );
+  };
+
+
+  const [myChat, setMyChat] = useState([]);
   const [writeChat, setWriteChat] = useState("");
   const HandlerSendChat = (e) => {
     e.preventDefault();
@@ -57,6 +70,26 @@ export default function MessegersUI() {
     setWriteChat("");
   };
   const endOfMessagesRef = useRef(null);
+  const [search, setSearch] = useState ([]); 
+  const ResultMessageData = useMemo(() => {
+    let computedData = myChat.map((msg) => ({
+      ...msg,
+      date_fmt: moment(msg.date).format("YYYY-MM-DD"),
+      isOutgoing: msg.from_id === profile.id
+    }));
+    if (search) {
+      computedData = computedData.filter(
+        listData => {
+          return Object.keys(listData).some(key =>
+            listData[key].toString().toLowerCase().includes(search)
+          );
+        }
+      );
+    }
+
+    return computedData;
+  }, [myChat, profile.id])
+
   const scrollToBottom = () => {
     endOfMessagesRef.current?.scrollIntoView({
       behavior: "smooth",
@@ -64,8 +97,9 @@ export default function MessegersUI() {
   };
 
   useEffect(() => {
+    setMyChat(selectedChat)
     scrollToBottom();
-  }, [myChat]);
+  }, []);
 
   return (
     <div className="card">
